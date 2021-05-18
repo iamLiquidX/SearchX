@@ -1,7 +1,6 @@
 import os
 import pickle
 import re
-
 import requests
 import logging
 
@@ -85,9 +84,7 @@ class GoogleDriveHelper:
 
     def drive_query(self, parent_id, fileName):
         var=re.split(' |\.|_',fileName)
-
         query = f"name contains '{var[0]}' and trashed=false"
-
         if parent_id != "root":
             response = self.__service.files().list(supportsTeamDrives=True,
                                                includeTeamDriveItems=True,
@@ -111,14 +108,14 @@ class GoogleDriveHelper:
         prev_page = 0
         for content in self.telegraph_content :
             if nxt_page == 1 :
-                content += f'<b><a href="https://telegra.ph/{self.path[nxt_page]}">Next</a></b>'
+                content += f'<b><a href="https://telegra.ph/{self.path[nxt_page]}">Nᴇxᴛ</a></b>'
                 nxt_page += 1
             else :
                 if prev_page <= self.num_of_path:
-                    content += f'<b><a href="https://telegra.ph/{self.path[prev_page]}">Prev</a></b>'
+                    content += f'<b><a href="https://telegra.ph/{self.path[prev_page]}">Pʀᴇᴠɪᴏᴜs</a></b>'
                     prev_page += 1
                 if nxt_page < self.num_of_path:
-                    content += f'<b> | <a href="https://telegra.ph/{self.path[nxt_page]}">Next</a></b>'
+                    content += f'<b> | <a href="https://telegra.ph/{self.path[nxt_page]}">Nᴇxᴛ</a></b>'
                     nxt_page += 1
             telegra_ph.edit_page(path = self.path[prev_page],
                                  title = 'SearchX',
@@ -138,27 +135,25 @@ class GoogleDriveHelper:
             add_drive_title = True
             response = self.drive_query(parent_id, fileName) 
             #LOGGER.info(f"my a: {response}")
-
-            LOGGER.info(f"my a: {x}")    
+            
+            
             INDEX += 1          
             if response:
-                if add_title_msg == True:
-                    msg = f'<h3>Search Results for : {fileName}</h3><br>SearchX<br><br>'
-                    add_title_msg = False
-                msg += f"╾────────────╼<br><b>{DRIVE_NAME[INDEX]}</b><br>╾────────────╼<br>"
-
+                
+                
                 for file in response:
-
+                    
                     x = re.search(pattern, file.get('name'),re.IGNORECASE)
+                    
                     if x:
-                         if add_title_msg == True:
-                            msg = f'<h3>Sᴇᴀʀᴄʜ Rᴇsᴜʟᴛs Fᴏʀ Yᴏᴜʀ Kᴇʏᴡᴏʀᴅ : {fileName}</h3><b><a href="https://telegram.dog/iamLiquidX"> iamLiquidX </a></b>'
+                        if add_title_msg == True:
+                            msg = f'<h3>Sᴇᴀʀᴄʜ Rᴇsᴜʟᴛs Fᴏʀ Yᴏᴜʀ Kᴇʏᴡᴏʀᴅ : {fileName}</h3><br><b><a href="https://github.com/iamLiquidX/SearchX"> Bot Repo </a></b> ||<b><a href="https://t.me/imLiquidX"> Owner </a></b><br><br>'
                             add_title_msg = False
                         if add_drive_title == True:
                             msg += f"╾────────────╼<br><b>{DRIVE_NAME[INDEX]}</b><br>╾────────────╼<br>"
                             add_drive_title = False
                         if file.get('mimeType') == "application/vnd.google-apps.folder":  # Detect Whether Current Entity is a Folder or File.
-                            msg += f"<code>{file.get('name')}</code> <b>(folder)</b><br>" \
+                            msg += f"🗃️<code>{file.get('name')}</code> <b>(folder)</b><br>" \
                                    f"<b><a href='https://drive.google.com/drive/folders/{file.get('id')}'>G-Dʀɪᴠᴇ Lɪɴᴋ</a></b>"
                             if INDEX_URL[INDEX] is not None:
                                 url_path = "/".join([requests.utils.quote(n, safe='') for n in self.get_recursive_list(file, parent_id)])
@@ -171,22 +166,27 @@ class GoogleDriveHelper:
                                 url_path = "/".join([requests.utils.quote(n, safe ='') for n in self.get_recursive_list(file, parent_id)])
                                 url = f'{INDEX_URL[INDEX]}/{url_path}'
                                 msg += f'<b> | <a href="{url}">Iɴᴅᴇx Lɪɴᴋ</a></b>'
-                            msg += '<br><br>'
+                        msg += '<br><br>'
                         content_count += 1
                     if (content_count==TELEGRAPHLIMIT):
-                        msg = f'<h3>Too Many Sᴇᴀʀᴄʜ Rᴇsᴜʟᴛs Fᴏʀ Yᴏᴜʀ Kᴇʏᴡᴏʀᴅ : {fileName}</h3><br>'
-
-
+                        msg = f'<h3>Too many Sᴇᴀʀᴄʜ Rᴇsᴜʟᴛs Fᴏʀ Yᴏᴜʀ Kᴇʏᴡᴏʀᴅ : {fileName}</h3><br>'
+                      
+                    
                         LOGGER.info(f"my a: {content_count}")
                         #self.telegraph_content.append(msg)
                         #msg = ""
                         #content_count = 0
-                        return f'<b>➼Too Many Result Entries To Show. I Have Found More Than {content_count} . Kindly Modify Your Search Query.Like Add Year With Movie Name, Add Season/Episode Number With TV-Show:(</b>', None
+                        return f'<b>➼Too Many Results To Show. I have Found more than {content_count} .Please Modify Your Search Query, Like Add Year With Movie Name, Add Season/Episode Number To TV-Show Name.:(</b>', None
+
+        
         if msg != '':
             self.telegraph_content.append(msg)
-
+            
         if len(self.telegraph_content) == 0:
-            return "No Result Found :(", None  
+            return "<b>➼Nᴏ Rᴇsᴜʟᴛs Fᴏᴜɴᴅ Fᴏʀ Yᴏᴜʀ Fɪʟᴇ Nᴀᴍᴇ Kᴇʏᴡᴏʀᴅ :(</b>", None
+      
+            
+        
 
         for content in self.telegraph_content :
             self.path.append(telegra_ph.create_page(title = 'SearchX',
@@ -196,9 +196,11 @@ class GoogleDriveHelper:
         if self.num_of_path > 1:
             self.edit_telegraph()
 
-        msg = f" <b>I Have Found  : {content_count} Results For Your Search Query </b> "
-
+        msg = f" <b>Sᴇᴀʀᴄʜ Rᴇsᴜʟᴛs Fᴏʀ Yᴏᴜʀ Kᴇʏᴡᴏʀᴅ :</b> ➼ {fileName} 👇 "
+        
+        msg = f" <b>I Have Found  : {content_count} Results For Your Search Query</b> "
+        
         buttons = button_builder.ButtonMaker()   
-        buttons.buildbutton("CLICK HERE", f"https://telegra.ph/{self.path[0]}")
+        buttons.buildbutton("Click Here For Results", f"https://telegra.ph/{self.path[0]}")
 
         return msg, InlineKeyboardMarkup(buttons.build_menu(1))
