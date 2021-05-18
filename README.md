@@ -18,6 +18,9 @@ For The Most Recent Changes, Please Check The Changelog.👇
 
 ### 👉[Changelog](https://github.com/iamLiquidX/SearchX/wiki/Changelog)
 
+If Bot Still Gets Stuck On 1 Or 2 Task, Check Solution.👇
+
+### 👉[Fix](https://github.com/iamLiquidX/SearchX/wiki/Fix-To-Getting-Stuck)
 
 
 
