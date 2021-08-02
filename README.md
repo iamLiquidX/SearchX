@@ -26,3 +26,4 @@ If Bot Still Getting Stuck On Any Task, Check Solution.👇
 
 # Credits 👇
 1.[Sreeraj V R](https://github.com/SVR666)- Created Search Bot.
+2.[AnimeKaizoku](https://github.com/AnimeKaizoku)- Fixes & Improvement.
